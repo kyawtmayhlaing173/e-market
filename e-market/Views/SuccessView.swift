@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SuccessView: View {
+    @Binding var shouldPopToRootView : Bool
+    
     var body: some View {
         VStack {
             HStack(spacing: 10) {
@@ -25,30 +27,29 @@ struct SuccessView: View {
                 .tracking(5)
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 50)
-            
             Button(action: {
+                print("Popping to root")
+                self.shouldPopToRootView = false
             }, label: {
-                NavigationLink(destination: ContentView()) {
-                    Text("Go to Home")
-                        .bold()
-                        .frame(
-                            minWidth: 0,
-                            maxWidth: .infinity,
-                            minHeight: 0,
-                            maxHeight: 50
-                        )
-                        .foregroundColor(Color.white)
-                        .background(Color.blue)
-                 }
+                Text("Go to Home")
+                    .bold()
+                    .frame(
+                        minWidth: 0,
+                        maxWidth: .infinity,
+                        minHeight: 0,
+                        maxHeight: 50
+                    )
+                    .foregroundColor(Color.white)
+                    .background(Color.blue)
             })
-            .cornerRadius(10)
-            .padding([.leading, .trailing], 20)
+                .cornerRadius(10)
+                .padding([.leading, .trailing], 20)
         }
     }
 }
 
 struct SuccessView_Previews: PreviewProvider {
     static var previews: some View {
-        SuccessView()
+        SuccessView(shouldPopToRootView: .constant(false))
     }
 }

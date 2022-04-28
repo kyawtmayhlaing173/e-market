@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     var columns = [GridItem(.adaptive(minimum: 160), spacing: 20)]
+    @State var isActive : Bool = false
     
     var body: some View {
         NavigationView {
@@ -16,7 +17,7 @@ struct ContentView: View {
                 LazyVGrid(columns: columns, spacing: 10) {
                     ForEach(productLists, id: \.self) {
                         product in NavigationLink {
-                            ProductView()
+                            ProductView(rootIsActive: self.$isActive)
                         } label: {
                             ProductCard(product: product)
                         }
@@ -25,15 +26,14 @@ struct ContentView: View {
             }
             .navigationTitle(Text("Coffee Shop"))
             .toolbar {
-                NavigationLink {
-                    OrderSummaryView()
-                } label: {
+                NavigationLink(
+                    destination: OrderSummaryView(rootIsActive: self.$isActive),
+                    isActive: self.$isActive
+                ) {
                     CartButton(numberOfProducts: 1)
                 }
             }
         }
-       
-
     }
 }
 

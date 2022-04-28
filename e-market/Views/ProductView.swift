@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct ProductView:View {
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.presentationMode) var mode: Binding<PresentationMode>
+    @Binding var rootIsActive : Bool
+    
     var body: some View {
         VStack{
             Image("coffee1")
@@ -26,15 +28,13 @@ struct ProductView:View {
             StepperView()
             HStack {
                 Button(action:{
-                    self.presentationMode.wrappedValue.dismiss()
+                    self.mode.wrappedValue.dismiss()
                 }) {
-                    NavigationLink(destination: ContentView()) {
-                        Text("Add To Cart")
-                            .bold()
-                            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 50)
-                            .foregroundColor(Color.white)
+                    Text("Add To Cart")
+                        .bold()
+                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 50)
+                        .foregroundColor(Color.white)
                         .background(Color.blue)
-                    }
                 }
                 .cornerRadius(10)
                 .padding([.leading, .trailing], 10)
@@ -43,7 +43,7 @@ struct ProductView:View {
                 Button(action:{
                     
                 }) {
-                    NavigationLink(destination: OrderSummaryView()) {
+                    NavigationLink(destination: OrderSummaryView(rootIsActive: self.$rootIsActive)) {
                         Text("Buy Now")
                             .bold()
                             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 50)
@@ -63,6 +63,6 @@ struct ProductView:View {
 
 struct ProductView_Previews: PreviewProvider{
     static var previews: some View {
-        ProductView()
+        ProductView(rootIsActive: .constant(false))
     }
 }

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct OrderSummaryView: View {
+    @Binding var rootIsActive : Bool
+    
     var body: some View {
         VStack {
             ScrollView{
@@ -20,7 +22,7 @@ struct OrderSummaryView: View {
                 Button(action: {
                     print("Floating Button Click")
                 }, label: {
-                    NavigationLink(destination: SuccessView()) {
+                    NavigationLink(destination:SuccessView(shouldPopToRootView: self.$rootIsActive)) {
                         Text("Checkout")
                             .bold()
                             .frame(
@@ -31,10 +33,10 @@ struct OrderSummaryView: View {
                             )
                             .foregroundColor(Color.white)
                             .background(Color.blue)
-                     }
+                    }
                 })
-                .cornerRadius(10)
-                .padding([.leading, .trailing], 20)
+                    .cornerRadius(10)
+                    .padding([.leading, .trailing], 30)
             }
             Spacer()
         }
@@ -43,6 +45,6 @@ struct OrderSummaryView: View {
 
 struct OrderSummaryView_Previews: PreviewProvider {
     static var previews: some View {
-        OrderSummaryView()
+        OrderSummaryView(rootIsActive: .constant(false))
     }
 }
