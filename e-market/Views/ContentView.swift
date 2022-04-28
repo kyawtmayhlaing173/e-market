@@ -12,6 +12,7 @@ struct ContentView: View {
     @State var isActive : Bool = false
     @State var results = [Product]()
     @State var isLoading: Bool = true
+    @State var storeInfo = Store(name: "", openingTime: "", closingTime: "")
     
     var body: some View {
         NavigationView {
@@ -29,7 +30,7 @@ struct ContentView: View {
                         }
                     }
                 }
-                .navigationTitle(Text("Coffee Shop"))
+                .navigationTitle(Text(storeInfo.name))
                 .toolbar {
                     NavigationLink(
                         destination: OrderSummaryView(rootIsActive: self.$isActive),
@@ -40,9 +41,13 @@ struct ContentView: View {
                 }
             }
         }
+        .padding(10)
         .onAppear() {
             ProductViewModel().fetchProducts { (results) in
                 self.results = results
+            }
+            StoreViewModel().fetchStoreInformation { (storeInfo) in
+                self.storeInfo = storeInfo
             }
         }
     }

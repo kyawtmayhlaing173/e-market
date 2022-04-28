@@ -8,8 +8,9 @@ struct ProductCard: View {
                 AsyncImage(
                     url: URL(string: product.imageUrl),
                     content: { image in
-                        image.resizable()
-                            .aspectRatio(contentMode: .fit)
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
                             .frame(width: 170, height: 250)
                             .cornerRadius(20)
                     },
@@ -28,6 +29,19 @@ struct ProductCard: View {
             }
             .frame(width: 170, height: 250)
             .shadow(radius: 3)
+            .padding(.top, 30)
+            
+            Button {
+                print("Added to cart!")
+            } label: {
+                Image(systemName: "plus")
+                    .padding(10)
+                    .foregroundColor(Color.white)
+                    .background(.black)
+                    .cornerRadius(50)
+                    .padding()
+            }
+            .padding(.top, 30)
         }
     }
 }

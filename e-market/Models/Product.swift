@@ -14,6 +14,6 @@ struct Product:Decodable, Hashable{
 }
 
 var productLists = [
-    Product(name: "Latte", price: 50, imageUrl: "coffee1"),
-    Product(name: "Dark Tiramisu Mocha", price: 75, imageUrl: "coffee2")
+    Product(name: "Coffee 1", price: 10, imageUrl: "coffee1"),
+    Product(name: "Coffee 2", price: 15, imageUrl: "coffee2")
 ]
