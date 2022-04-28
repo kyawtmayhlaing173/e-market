@@ -5,11 +5,18 @@ struct ProductCard: View {
     var body: some View {
         ZStack(alignment: .topTrailing) {
             ZStack(alignment: .bottom) {
-                Image(product.imageUrl)
-                    .resizable()
-                    .cornerRadius(20)
-                    .frame(width: 170)
-                    .scaledToFit()
+                AsyncImage(
+                    url: URL(string: product.imageUrl),
+                    content: { image in
+                        image.resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 170, height: 250)
+                            .cornerRadius(20)
+                    },
+                    placeholder: {
+                        ProgressView()
+                    }
+                ).frame(width: 170, height: 250)
                 VStack(alignment: .leading) {
                     Text(product.name).bold()
                     Text("\(product.price)$").font(.caption)

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Product:Hashable{
+struct Product:Decodable, Hashable{
     var name: String
     var price: Int
     var imageUrl: String
