@@ -13,6 +13,11 @@ struct Product:Decodable, Hashable{
     var imageUrl: String
 }
 
+struct ProductOrder: Hashable {
+    var product: Product
+    var quantity: Int
+}
+
 var productLists = [
     Product(name: "Coffee 1", price: 10, imageUrl: "coffee1"),
     Product(name: "Coffee 2", price: 15, imageUrl: "coffee2")

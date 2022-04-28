@@ -9,18 +9,25 @@ import SwiftUI
 
 struct OrderSummaryView: View {
     @Binding var rootIsActive : Bool
+    @EnvironmentObject var cartManager: CartManager
     
     var body: some View {
         VStack {
-            ScrollView{
-                Text("Your Order").bold().font(.title)
-                OrderSummaryCard(order_count: 1)
-                OrderSummaryCard(order_count: 2)
-                OrderSummaryCard(order_count: 4)
+            VStack {
+                ScrollView{
+                    Text("Your Order").bold().font(.title)
+                    ForEach(cartManager.cart, id: \.self) { item in
+                        OrderSummaryCard(order_count: item.quantity, product: item.product).environmentObject(cartManager)
+                    }
+                }
             }
             Group {
+                HStack {
+                    Text("TOTAL").bold().font(.title3)
+                    Spacer()
+                    Text("$\(cartManager.total)").font(.title2)
+                }.padding()
                 Button(action: {
-                    print("Floating Button Click")
                 }, label: {
                     NavigationLink(destination:SuccessView(shouldPopToRootView: self.$rootIsActive)) {
                         Text("Checkout")
@@ -45,6 +52,6 @@ struct OrderSummaryView: View {
 
 struct OrderSummaryView_Previews: PreviewProvider {
     static var previews: some View {
-        OrderSummaryView(rootIsActive: .constant(false))
+        OrderSummaryView(rootIsActive: .constant(false)).environmentObject(CartManager())
     }
 }

@@ -10,22 +10,34 @@ import SwiftUI
 struct ProductView:View {
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     @Binding var rootIsActive : Bool
+    let product: Product
     
     var body: some View {
         VStack{
-            Image("coffee1")
-                .resizable()
-                .cornerRadius(20)
+            AsyncImage(
+                url: URL(string: product.imageUrl),
+                content: { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .cornerRadius(20)
+                },
+                placeholder: {
+                    ProgressView()
+                }
+            )
                 .frame(maxWidth: .infinity, maxHeight: 400)
+                .padding(.bottom, 30)
             HStack {
-                Text("Coffee Latte")
+                Text(product.name)
                     .font(.title)
                     .bold()
                 Spacer()
-                Text("$20")
+                Text("\(product.price)$")
                     .font(.subheadline)
             }
-            StepperView()
+            StepperView(quantity: 0)
             HStack {
                 Button(action:{
                     self.mode.wrappedValue.dismiss()
@@ -63,6 +75,6 @@ struct ProductView:View {
 
 struct ProductView_Previews: PreviewProvider{
     static var previews: some View {
-        ProductView(rootIsActive: .constant(false))
+        ProductView(rootIsActive: .constant(false), product: Product(name: "", price: 0, imageUrl: ""))
     }
 }

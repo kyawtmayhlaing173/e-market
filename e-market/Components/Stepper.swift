@@ -1,30 +1,30 @@
 import SwiftUI
 
 struct StepperView: View {
-    @State private var value = 0
-
+    @State var quantity: Int
+    
+    init(quantity: Int) {
+        self.quantity = quantity
+    }
+    
     func incrementStep() {
-        value += 1
+        quantity += 1
     }
-
+    
     func decrementStep() {
-        value -= 1
+        if quantity > 0 {
+            quantity -= 1
+        }
     }
-
+    
     var body: some View {
         Stepper {
-            Text("\(value)").bold()
+            Text("\(quantity)").bold()
         } onIncrement: {
             incrementStep()
         } onDecrement: {
             decrementStep()
         }
         .padding(5)
-    }
-}
-
-struct StepperView_Previews: PreviewProvider {
-    static var previews: some View{
-        StepperView()
     }
 }
