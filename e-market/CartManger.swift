@@ -18,11 +18,23 @@ class CartManager: ObservableObject {
             let result = cart.filter{$0.product == product}
             if (result.count > 0) {
                 let quantity = result[0].quantity + 1
-                cart = cart.filter{$0.product != product}
-                cart.append(ProductOrder(product: product, quantity: quantity))
+                let newProduct = ProductOrder(product: product, quantity: quantity)
+                cart = cart.map { $0.product == product ? newProduct: $0 }
             } else {
                 cart.append(ProductOrder(product: product, quantity: 1))
             }
+        }
+        total += product.price
+    }
+    
+    func decreaseProductCount(product: Product) {
+        let result = cart.filter{$0.product == product}
+        if (result.count > 0) {
+            let quantity = result[0].quantity - 1
+            let newProduct = ProductOrder(product: product, quantity: quantity)
+            cart = cart.map { $0.product == product ? newProduct: $0 }
+        } else {
+            cart.append(ProductOrder(product: product, quantity: 1))
         }
         total += product.price
     }

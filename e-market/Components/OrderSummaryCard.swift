@@ -10,6 +10,7 @@ import SwiftUI
 struct OrderSummaryCard: View {
     var order_count: Int
     var product: Product
+    @EnvironmentObject var cartManager: CartManager
     
     var body: some View {
         HStack(spacing: 20) {
@@ -18,21 +19,57 @@ struct OrderSummaryCard: View {
                 content: { image in
                     image
                         .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 70)
+                        .aspectRatio(contentMode: .fit)
                         .cornerRadius(20)
+                        .frame(width: 70, height: 120)
                 },
                 placeholder: {
                     ProgressView()
                 }
-            ).frame(width: 70)
+            ).frame(width: 70, height: 120)
             VStack(alignment: .leading, spacing: 10) {
                 Text(product.name)
-                    .bold().frame(width: 60, alignment: .leading)
+                    .bold()
+                    .frame(alignment: .leading)
+                    .font(.title2)
                 Text("$\(product.price)")
+                HStack {
+                    Button {
+                        cartManager.removeFromCart(product: product)
+                    } label: {
+                        Image(systemName: "minus")
+                            .padding(.top, 6)
+                            .padding(.bottom, 6)
+                            .padding(5)
+                            .foregroundColor(Color.white)
+                            .background(.blue)
+                            .cornerRadius(50)
+                    }
+                    
+                    Text("\(order_count)")
+                    
+                    Button {
+                        cartManager.addToCart(product: product)
+                    } label: {
+                        Image(systemName: "plus")
+                            .padding(5)
+                            .foregroundColor(Color.white)
+                            .background(.blue)
+                            .cornerRadius(50)
+                    }
+                    Spacer()
+                    Button {
+                        cartManager.removeFromCart(product: product)
+                    } label: {
+                        Image(systemName: "trash")
+                            .padding(5)
+                            .foregroundColor(Color.black)
+                            .background(.white)
+                            .cornerRadius(50)
+                    }
+                }
             }
             Spacer()
-            StepperView(quantity: order_count)
         }
         .padding(.horizontal)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -42,6 +79,6 @@ struct OrderSummaryCard: View {
 
 struct OrderSummaryCard_Previews: PreviewProvider {
     static var previews: some View {
-        OrderSummaryCard(order_count: 0, product: Product(name: "", price: 0, imageUrl: ""))
+        OrderSummaryCard(order_count: 0, product: Product(name: "", price: 0, imageUrl: "")).environmentObject(CartManager())
     }
 }

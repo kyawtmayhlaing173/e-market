@@ -18,6 +18,7 @@ struct OrderSummaryView: View {
                     Text("Your Order").bold().font(.title)
                     ForEach(cartManager.cart, id: \.self) { item in
                         OrderSummaryCard(order_count: item.quantity, product: item.product).environmentObject(cartManager)
+                        Divider()
                     }
                 }
             }

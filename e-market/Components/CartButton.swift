@@ -14,14 +14,14 @@ struct CartButton: View {
         ZStack(alignment: .topTrailing) {
             Image(systemName: "cart")
                 .padding(.all, 5)
-            
             if (numberOfProducts > 0) {
                 Text("\(numberOfProducts)")
                     .bold()
                     .font(.caption)
-                    .badge(1)
+                    .padding(3)
+                    .background(Color.blue)
+                    .foregroundColor(Color.white)
                     .cornerRadius(50)
-                    .foregroundColor(Color.blue)
             }
         }
     }
