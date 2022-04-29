@@ -43,4 +43,8 @@ class CartManager: ObservableObject {
         cart = cart.filter{$0.product != product}
         total -= product.price
     }
+    
+    func clearCart() {
+        cart = []
+    }
 }

@@ -7,8 +7,6 @@
 
 import Foundation
 
-import Foundation
-
 struct Cart:Decodable, Hashable{
     var name: String
     var price: Int
