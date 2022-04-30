@@ -7,7 +7,7 @@
 import Foundation
 import Alamofire
 
-class ProductViewModel {
+class ProductViewModel: ObservableObject {
     
     func fetchProducts(completion:@escaping ([Product]) -> ()) {
         guard let url = URL(string: "https://c8d92d0a-6233-4ef7-a229-5a91deb91ea1.mock.pstmn.io/products") else { return }
@@ -61,16 +61,4 @@ class ProductViewModel {
         
         
     }
-}
-
-struct PostModel: Decodable {
-    let id: Int
-    let userId: Int
-    let title: String
-    let body: String
-}
-
-struct JsonModel: Decodable {
-    let products: [Product]
-    let delivery_address: String
 }

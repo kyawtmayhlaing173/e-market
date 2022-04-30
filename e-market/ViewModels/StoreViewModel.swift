@@ -6,7 +6,7 @@
 //
 import Foundation
 
-class StoreViewModel {
+class StoreViewModel: ObservableObject {
     
     func fetchStoreInformation(completion:@escaping (Store) -> ()) {
             guard let url = URL(string: "https://c8d92d0a-6233-4ef7-a229-5a91deb91ea1.mock.pstmn.io/storeInfo") else { return }

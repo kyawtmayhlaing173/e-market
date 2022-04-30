@@ -10,7 +10,7 @@ import SwiftUI
 struct OrderSummaryCard: View {
     var order_count: Int
     var product: Product
-    @EnvironmentObject var cartManager: CartManager
+    @EnvironmentObject var CartController: CartController
     
     var body: some View {
         HStack(spacing: 20) {
@@ -35,7 +35,7 @@ struct OrderSummaryCard: View {
                 Text("$\(product.price)")
                 HStack {
                     Button {
-                        cartManager.removeFromCart(product: product)
+                        CartController.removeFromCart(product: product)
                     } label: {
                         Image(systemName: "minus")
                             .padding(.top, 6)
@@ -49,7 +49,7 @@ struct OrderSummaryCard: View {
                     Text("\(order_count)")
                     
                     Button {
-                        cartManager.addToCart(product: product)
+                        CartController.addToCart(product: product)
                     } label: {
                         Image(systemName: "plus")
                             .padding(5)
@@ -59,7 +59,7 @@ struct OrderSummaryCard: View {
                     }
                     Spacer()
                     Button {
-                        cartManager.removeFromCart(product: product)
+                        CartController.removeFromCart(product: product)
                     } label: {
                         Image(systemName: "trash")
                             .padding(5)
@@ -79,6 +79,6 @@ struct OrderSummaryCard: View {
 
 struct OrderSummaryCard_Previews: PreviewProvider {
     static var previews: some View {
-        OrderSummaryCard(order_count: 0, product: Product(name: "", price: 0, imageUrl: "")).environmentObject(CartManager())
+        OrderSummaryCard(order_count: 0, product: Product(name: "", price: 0, imageUrl: "")).environmentObject(CartController())
     }
 }

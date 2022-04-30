@@ -9,10 +9,11 @@ import SwiftUI
 
 struct OrderSummaryView: View {
     @Binding var rootIsActive : Bool
-    @EnvironmentObject var cartManager: CartManager
-    @State private var username: String = "Kyawt May Hlaing"
+    @EnvironmentObject var CartController: CartController
     @State private var address: String = "CDC O4 Office, Bangkapi, Bangkok, 10310"
     @State var movetoNextScreen: Int?
+    @ObservedObject var productViewModel = ProductViewModel()
+    @State private var isLoading = false
     
     var body: some View {
         VStack {
@@ -24,12 +25,6 @@ struct OrderSummaryView: View {
                         .padding(10)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     TextField(
-                        "Name",
-                        text: $username
-                    )
-                        .disableAutocorrection(true)
-                        .padding(10)
-                    TextField(
                         "Address",
                         text: $address
                     )
@@ -40,14 +35,14 @@ struct OrderSummaryView: View {
                         .font(.title2)
                         .padding(10)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    if (cartManager.cart.count == 0) {
+                    if (CartController.cart.count == 0) {
                         Text("No Order Yet")
                             .font(.title3)
                             .foregroundColor(Color.gray)
                             .padding(30)
                     }
-                    ForEach(cartManager.cart, id: \.self) { item in
-                        OrderSummaryCard(order_count: item.quantity, product: item.product).environmentObject(cartManager)
+                    ForEach(CartController.cart, id: \.self) { item in
+                        OrderSummaryCard(order_count: item.quantity, product: item.product).environmentObject(CartController)
                         Divider()
                     }
                 }
@@ -57,33 +52,42 @@ struct OrderSummaryView: View {
                 HStack {
                     Text("TOTAL").bold().font(.title3)
                     Spacer()
-                    Text("$\(cartManager.total)").font(.title2)
+                    Text("$\(CartController.total)").font(.title2)
                 }.padding()
                 
                 Button(action: {
-                    if (username.isEmpty || address.isEmpty || cartManager.cart.count == 0) {
+                    self.isLoading = true
+                    if (address.isEmpty || CartController.cart.count == 0) {
+                        self.isLoading = false
                         movetoNextScreen = 0
                     } else {
-                        cartManager.cart = []
-                        ProductViewModel().postOrder(order: cartManager.cart, delivery_address: address) { (status) in
+                        CartController.cart = []
+                        self.productViewModel.postOrder(order: CartController.cart, delivery_address: address) { (status) in
                             if status {
-                                print("Status Code is", status)
                                 movetoNextScreen = 1
+                            } else {
+                                movetoNextScreen = 0
                             }
                         }
                         
                     }
                 }) {
-                    Text("Checkout")
-                        .bold()
-                        .frame(
-                            minWidth: 0,
-                            maxWidth: .infinity,
-                            minHeight: 0,
-                            maxHeight: 50
-                        )
-                        .foregroundColor(Color.white)
-                        .background(Color.blue)
+                    if (isLoading == true) {
+                        ProgressIndicator()
+                    } else {
+                        Text("Checkout")
+                            .bold()
+                            .frame(
+                                minWidth: 0,
+                                maxWidth: .infinity,
+                                minHeight: 0,
+                                maxHeight: 50
+                            )
+                            .foregroundColor(Color.white)
+                            .background(Color.blue)
+                    }
+                    
+                    
                 }
                 .cornerRadius(10)
                 .padding([.leading, .trailing], 30)
@@ -100,6 +104,6 @@ struct OrderSummaryView: View {
 
 struct OrderSummaryView_Previews: PreviewProvider {
     static var previews: some View {
-        OrderSummaryView(rootIsActive: .constant(false)).environmentObject(CartManager())
+        OrderSummaryView(rootIsActive: .constant(false)).environmentObject(CartController())
     }
 }

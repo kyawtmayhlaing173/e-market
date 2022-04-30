@@ -18,11 +18,6 @@ struct ProductOrder: Hashable {
     var quantity: Int
 }
 
-struct ProductConfirm: Hashable {
-    var product: [Product]
-    var delivery_address: String
-}
-
 var productLists = [
     Product(name: "Coffee 1", price: 10, imageUrl: "coffee1"),
     Product(name: "Coffee 2", price: 15, imageUrl: "coffee2")

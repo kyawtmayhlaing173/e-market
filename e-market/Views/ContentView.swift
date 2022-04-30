@@ -11,9 +11,10 @@ struct ContentView: View {
     var columns = [GridItem(.adaptive(minimum: 160), spacing: 20)]
     @State var isActive : Bool = false
     @State var results = [Product]()
-    @State var isLoading: Bool = true
     @State var storeInfo = Store(name: "", openingTime: "", closingTime: "")
-    @StateObject var cartManager = CartManager()
+    @StateObject var cartManager = CartController()
+    @ObservedObject var productViewModel = ProductViewModel()
+    @ObservedObject var storeViewModel = StoreViewModel()
     
     var body: some View {
         NavigationView {
@@ -33,17 +34,18 @@ struct ContentView: View {
                         destination: OrderSummaryView(rootIsActive: self.$isActive).environmentObject(cartManager),
                         isActive: self.$isActive
                     ) {
-                        CartButton(numberOfProducts: cartManager.cart.count)
+                        CartButton(numberOfProducts: cartManager.cart.map({$0.quantity}).reduce(0, +)
+                        )
                     }
                 }
             }
         }
         .padding(10)
         .onAppear() {
-            ProductViewModel().fetchProducts { (results) in
+            self.productViewModel.fetchProducts { (results) in
                 self.results = results
             }
-            StoreViewModel().fetchStoreInformation { (storeInfo) in
+            self.storeViewModel.fetchStoreInformation { (storeInfo) in
                 self.storeInfo = storeInfo
             }
         }
