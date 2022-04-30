@@ -1,5 +1,5 @@
 //
-//  OrderSummaryCard.swift
+//  CartProductCard.swift
 //  e-market
 //
 //  Created by Kyawt May Hlaing on 27/04/2022.
@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct OrderSummaryCard: View {
+struct CartProductCard: View {
     var order_count: Int
     var product: Product
-    @EnvironmentObject var CartController: CartController
+    @EnvironmentObject var cartController: CartController
     
     var body: some View {
         HStack(spacing: 20) {
@@ -35,7 +35,7 @@ struct OrderSummaryCard: View {
                 Text("$\(product.price)")
                 HStack {
                     Button {
-                        CartController.removeFromCart(product: product)
+                        cartController.removeFromCart(product: product)
                     } label: {
                         Image(systemName: "minus")
                             .padding(.top, 6)
@@ -49,7 +49,7 @@ struct OrderSummaryCard: View {
                     Text("\(order_count)")
                     
                     Button {
-                        CartController.addToCart(product: product)
+                        cartController.addToCart(product: product)
                     } label: {
                         Image(systemName: "plus")
                             .padding(5)
@@ -59,7 +59,7 @@ struct OrderSummaryCard: View {
                     }
                     Spacer()
                     Button {
-                        CartController.removeFromCart(product: product)
+                        cartController.removeFromCart(product: product)
                     } label: {
                         Image(systemName: "trash")
                             .padding(5)
@@ -77,8 +77,8 @@ struct OrderSummaryCard: View {
     }
 }
 
-struct OrderSummaryCard_Previews: PreviewProvider {
+struct CartProductCard_Previews: PreviewProvider {
     static var previews: some View {
-        OrderSummaryCard(order_count: 0, product: Product(name: "", price: 0, imageUrl: "")).environmentObject(CartController())
+        CartProductCard(order_count: 0, product: Product(name: "", price: 0, imageUrl: "")).environmentObject(CartController())
     }
 }

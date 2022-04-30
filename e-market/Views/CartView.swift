@@ -1,5 +1,5 @@
 //
-//  OrderSummaryView.swift
+//  CartView.swift
 //  e-market
 //
 //  Created by Kyawt May Hlaing on 27/04/2022.
@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct OrderSummaryView: View {
+struct CartView: View {
     @Binding var rootIsActive : Bool
-    @EnvironmentObject var CartController: CartController
+    @EnvironmentObject var cartController: CartController
     @State private var address: String = "CDC O4 Office, Bangkapi, Bangkok, 10310"
     @State var movetoNextScreen: Int?
     @ObservedObject var productViewModel = ProductViewModel()
@@ -35,14 +35,14 @@ struct OrderSummaryView: View {
                         .font(.title2)
                         .padding(10)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    if (CartController.cart.count == 0) {
+                    if (cartController.cart.count == 0) {
                         Text("No Order Yet")
                             .font(.title3)
                             .foregroundColor(Color.gray)
                             .padding(30)
                     }
-                    ForEach(CartController.cart, id: \.self) { item in
-                        OrderSummaryCard(order_count: item.quantity, product: item.product).environmentObject(CartController)
+                    ForEach(cartController.cart, id: \.self) { item in
+                        CartProductCard(order_count: item.quantity, product: item.product).environmentObject(cartController)
                         Divider()
                     }
                 }
@@ -52,17 +52,17 @@ struct OrderSummaryView: View {
                 HStack {
                     Text("TOTAL").bold().font(.title3)
                     Spacer()
-                    Text("$\(CartController.total)").font(.title2)
+                    Text("$\(cartController.total)").font(.title2)
                 }.padding()
                 
                 Button(action: {
                     self.isLoading = true
-                    if (address.isEmpty || CartController.cart.count == 0) {
+                    if (address.isEmpty || cartController.cart.count == 0) {
                         self.isLoading = false
                         movetoNextScreen = 0
                     } else {
-                        CartController.cart = []
-                        self.productViewModel.postOrder(order: CartController.cart, delivery_address: address) { (status) in
+                        cartController.clearCart()
+                        self.productViewModel.postOrder(order: cartController.cart, delivery_address: address) { (status) in
                             if status {
                                 movetoNextScreen = 1
                             } else {
@@ -102,8 +102,8 @@ struct OrderSummaryView: View {
 }
 
 
-struct OrderSummaryView_Previews: PreviewProvider {
+struct CartViewView_Previews: PreviewProvider {
     static var previews: some View {
-        OrderSummaryView(rootIsActive: .constant(false)).environmentObject(CartController())
+        CartView(rootIsActive: .constant(false)).environmentObject(CartController())
     }
 }

@@ -55,7 +55,7 @@ struct ProductView:View {
                 Button(action:{
                     
                 }) {
-                    NavigationLink(destination: OrderSummaryView(rootIsActive: self.$rootIsActive)) {
+                    NavigationLink(destination: CartView(rootIsActive: self.$rootIsActive)) {
                         Text("Buy Now")
                             .bold()
                             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 50)

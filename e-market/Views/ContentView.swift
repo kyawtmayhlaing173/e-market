@@ -12,7 +12,7 @@ struct ContentView: View {
     @State var isActive : Bool = false
     @State var results = [Product]()
     @State var storeInfo = Store(name: "", openingTime: "", closingTime: "")
-    @StateObject var cartManager = CartController()
+    @StateObject var cartController = CartController()
     @ObservedObject var productViewModel = ProductViewModel()
     @ObservedObject var storeViewModel = StoreViewModel()
     
@@ -24,17 +24,17 @@ struct ContentView: View {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 10) {
                         ForEach(results, id: \.self) { item in
-                            ProductCard(product: item).environmentObject(cartManager)
+                            ProductCard(product: item).environmentObject(cartController)
                         }
                     }
                 }
                 .navigationTitle(Text(storeInfo.name))
                 .toolbar {
                     NavigationLink(
-                        destination: OrderSummaryView(rootIsActive: self.$isActive).environmentObject(cartManager),
+                        destination: CartView(rootIsActive: self.$isActive).environmentObject(cartController),
                         isActive: self.$isActive
                     ) {
-                        CartButton(numberOfProducts: cartManager.cart.map({$0.quantity}).reduce(0, +)
+                        CartButton(numberOfProducts: cartController.cart.map({$0.quantity}).reduce(0, +)
                         )
                     }
                 }

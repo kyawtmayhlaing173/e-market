@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ProductCard: View {
-    @EnvironmentObject var CartController: CartController
+    @EnvironmentObject var cartController: CartController
     var product: Product
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -34,7 +34,7 @@ struct ProductCard: View {
             
             Button {
                 print("Added to cart!")
-                CartController.addToCart(product: product)
+                cartController.addToCart(product: product)
             } label: {
                 Image(systemName: "plus")
                     .padding(10)
