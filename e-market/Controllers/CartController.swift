@@ -48,6 +48,7 @@ class CartController: ObservableObject {
     
     func clearCart() {
         cart = []
+        total = 0
     }
 
 }
