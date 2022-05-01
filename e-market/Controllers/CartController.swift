@@ -35,8 +35,8 @@ class CartController: ObservableObject {
         } else {
             let newProduct = ProductOrder(product: product, quantity: quantity)
             cart = cart.map { $0.product == product ? newProduct: $0 }
+            total -= product.price
         }
-        total -= product.price
     }
     
     func removeFromCart(product: Product) {

@@ -31,24 +31,36 @@ class e_marketTests: XCTestCase {
         self.storeViewModel.fetchStoreInformation()
         XCTAssertEqual(self.storeViewModel.storeInfo, store1)
     }
-
+    
     func testProductService() {
         self.productViewModel.fetchProducts()
         XCTAssertEqual(self.productViewModel.products, [Product(name: "Hello", price: 0, imageUrl: "")])
     }
     
-    func testAddProductCountToCartCalculatingTotalPrice() {
+    func testCalculatingTotalPriceByAddingProductCountToCart() {
         cart.addToCart(product: product1)
         cart.addToCart(product: product1)
         XCTAssertEqual(cart.total, 100)
     }
     
-    func testDecreaseProductCountFromCartCalculatingTotalPrice() {
+    func testCalculatingTotalPricebyDecreasingProductCountFromCart() {
         cart.addToCart(product: product1)
         cart.addToCart(product: product1)
         cart.addToCart(product: product2)
         cart.decreaseProductCount(product: product1)
         XCTAssertEqual(cart.total, 125)
+    }
+    
+    func testCalculatingTotalPriceByDecreasingProductCountToZero() {
+        cart.addToCart(product: product1)
+        cart.addToCart(product: product1)
+        cart.addToCart(product: product1)
+        cart.addToCart(product: product1)
+        cart.decreaseProductCount(product: product1)
+        cart.decreaseProductCount(product: product1)
+        cart.decreaseProductCount(product: product1)
+        cart.decreaseProductCount(product: product1)
+        XCTAssertEqual(cart.total, 0)
     }
     
     func testRemoveProductFromCart() {
@@ -59,11 +71,11 @@ class e_marketTests: XCTestCase {
         XCTAssertEqual(cart.total, 75)
     }
     
-    //    func testClearCart() {
-    //        cart.addToCart(product: product1)
-    //        cart.addToCart(product: product1)
-    //        cart.clearCart()
-    //        XCTAssertEqual(cart, [])
-    //    }
+    func testClearCart() {
+        cart.addToCart(product: product1)
+        cart.addToCart(product: product1)
+        cart.clearCart()
+        XCTAssertEqual(cart.total, 0)
+    }
     
 }
