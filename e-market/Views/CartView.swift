@@ -69,7 +69,6 @@ struct CartView: View {
                                 movetoNextScreen = 0
                             }
                         }
-                        
                     }
                 }) {
                     if (isLoading == true) {

@@ -9,15 +9,16 @@ import Foundation
 class StoreViewModel: ObservableObject {
     
     private let storeService: StoreServiceProtocol
+    @Published private(set) var storeInfo: Store = Store(name: "", openingTime: "", closingTime: "")
     
     init(storeService: StoreServiceProtocol = StoreService()) {
         self.storeService = storeService
     }
     
-    func fetchStoreInformation(completion:@escaping (Store) -> ()) {
-        storeService.fetchStoreInformation { (storeInfo) in
+    func fetchStoreInformation() {
+        storeService.fetchStoreInformation { (store) in
             DispatchQueue.main.async {
-                completion(storeInfo)
+                self.storeInfo = store
             }
         }
     }

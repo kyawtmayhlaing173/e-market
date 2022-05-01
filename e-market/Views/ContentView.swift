@@ -10,25 +10,23 @@ import SwiftUI
 struct ContentView: View {
     var columns = [GridItem(.adaptive(minimum: 160), spacing: 20)]
     @State var isActive : Bool = false
-    @State var results = [Product]()
-    @State var storeInfo = Store(name: "", openingTime: "", closingTime: "")
     @StateObject var cartController = CartController()
     @ObservedObject var productViewModel = ProductViewModel()
     @ObservedObject var storeViewModel = StoreViewModel()
     
     var body: some View {
         NavigationView {
-            if (results.count == 0) {
+            if (self.productViewModel.products.count == 0) {
                 ProgressView()
             } else {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 10) {
-                        ForEach(results, id: \.self) { item in
+                        ForEach(self.productViewModel.products, id: \.self) { item in
                             ProductCard(product: item).environmentObject(cartController)
                         }
                     }
                 }
-                .navigationTitle(Text(storeInfo.name))
+                .navigationTitle(Text(storeViewModel.storeInfo.name))
                 .toolbar {
                     NavigationLink(
                         destination: CartView(rootIsActive: self.$isActive).environmentObject(cartController),
@@ -42,12 +40,8 @@ struct ContentView: View {
         }
         .padding(10)
         .onAppear() {
-            self.productViewModel.fetchProducts { (results) in
-                self.results = results
-            }
-            self.storeViewModel.fetchStoreInformation { (storeInfo) in
-                self.storeInfo = storeInfo
-            }
+            self.productViewModel.fetchProducts()
+            self.storeViewModel.fetchStoreInformation()
         }
     }
 }
