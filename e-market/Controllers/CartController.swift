@@ -28,20 +28,22 @@ class CartController: ObservableObject {
     }
     
     func decreaseProductCount(product: Product) {
-        let filteredProduct = cart.filter{$0.product == product}
-        if (filteredProduct.count > 0) {
-            let quantity = filteredProduct[0].quantity - 1
+        let result = cart.filter{$0.product == product}
+        let quantity = result[0].quantity - 1
+        if (quantity == 0) {
+            removeFromCart(product: product)
+        } else {
             let newProduct = ProductOrder(product: product, quantity: quantity)
             cart = cart.map { $0.product == product ? newProduct: $0 }
-        } else {
-            cart.append(ProductOrder(product: product, quantity: 1))
         }
-        total += product.price
+        total -= product.price
     }
     
     func removeFromCart(product: Product) {
+        let result = cart.filter{$0.product == product}
+        let quantity = result[0].quantity
         cart = cart.filter{$0.product != product}
-        total -= product.price
+        total -= product.price * quantity
     }
     
     func clearCart() {

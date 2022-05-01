@@ -35,7 +35,7 @@ struct CartProductCard: View {
                 Text("$\(product.price)")
                 HStack {
                     Button {
-                        cartController.removeFromCart(product: product)
+                        cartController.decreaseProductCount(product: product)
                     } label: {
                         Image(systemName: "minus")
                             .padding(.top, 6)

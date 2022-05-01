@@ -10,6 +10,7 @@ import Alamofire
 class ProductViewModel: ObservableObject {
     
     private let productService: ProductServiceProtocol
+    @Published private var success: Bool = false
     
     init(productService: ProductServiceProtocol = ProductService()) {
         self.productService = productService
@@ -26,7 +27,8 @@ class ProductViewModel: ObservableObject {
     func postOrder(order: [ProductOrder], delivery_address: String, completion:@escaping (Bool) -> ()) {
         productService.postOrder(order: order, delivery_address: delivery_address) { (status) in
             DispatchQueue.main.async {
-                completion(status)
+                self.success = status
+                completion(self.success)
             }
         }
     }

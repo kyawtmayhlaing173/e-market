@@ -37,7 +37,6 @@ struct ProductView:View {
                 Text("\(product.price)$")
                     .font(.subheadline)
             }
-//            StepperView(quantity: 0)
             HStack {
                 Button(action:{
                     self.mode.wrappedValue.dismiss()

@@ -30,12 +30,9 @@ class ProductService: ProductServiceProtocol {
     
     func postOrder(order: [ProductOrder], delivery_address: String, completion:@escaping (Bool) -> ()){
         var products: [Product] = []
-        var responseCode: Int?
         for item in order {
             products.append(item.product)
         }
-        
-        print("Prepare JSON", products)
         
         let parameters: [String: Any] = [
             "products": products,
@@ -51,19 +48,14 @@ class ProductService: ProductServiceProtocol {
                 .responseData { response in
                     switch response.result {
                     case .success:
-                        responseCode = response.response?.statusCode
                         print("Validation Successful")
                         completion(true)
                     case .failure(let error):
-                        responseCode = response.response?.statusCode
                         print("Validation Error", error)
                         completion(false)
                     }
                 }
         }
-        
-        
-        
         
     }
 }
